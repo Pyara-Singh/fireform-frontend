@@ -76,7 +76,7 @@ interface WeatherResult {
   latitude: number
   longitude: number
   hourly?: {
-    time?: string[]
+    date?: string[]
     [key: string]: unknown
   }
 }
@@ -85,11 +85,11 @@ function serializeWeatherData(
   data: WeatherResult,
   activeFields: Array<(typeof FIELD_CATALOGUE)[number]>
 ): string {
-  if (!data.hourly || !Array.isArray(data.hourly.time)) {
+  if (!data.hourly || !Array.isArray(data.hourly.date)) {
     return 'No hourly data returned.'
   }
 
-  const times = data.hourly.time
+  const times = data.hourly.date
   let text = `Latitude: ${data.latitude}, Longitude: ${data.longitude}\n`
   text += `Recorded hourly metrics:\n`
 
@@ -416,7 +416,7 @@ export function WeatherModal({
             <div className="space-y-2 border border-zinc-200 rounded-lg p-3 bg-zinc-50">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase font-mono text-zinc-800">
-                  Retrieved Hourly Timeline ({result.hourly.time?.length ?? 0} data points)
+                  Retrieved Hourly Timeline ({result.hourly.date?.length ?? 0} data points)
                 </span>
                 <Badge variant="outline" className="text-[10px] font-mono">
                   {activeFields.length} metrics
@@ -436,7 +436,7 @@ export function WeatherModal({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100 font-mono text-[11px]">
-                    {result.hourly.time?.slice(0, 12).map((t, idx) => (
+                    {result.hourly.date?.slice(0, 12).map((t, idx) => (
                       <tr key={idx} className="hover:bg-zinc-50">
                         <td className="p-2 font-semibold text-zinc-700">{t.replace('T', ' ')}</td>
                         {activeFields.map(f => {
